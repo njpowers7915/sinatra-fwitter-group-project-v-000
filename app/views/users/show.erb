@@ -1,7 +1,7 @@
-<h2>Welcome <%=@user.username%>!</h2>
+<h2>Your Tweets</h2>
 
-<h4><a href='/create_tweet'>Make a tweet</a></h4>
-<br>
-<h4><a href='/all_tweets'>Your tweets</a></h4>
-<br>
-<h4><a href='/tweets'>View all tweets</a></h4>
+<ol>
+    <% @user.tweets.each do |tweet| %>
+        <li> <%= tweet.content %></li>
+    <%end%>
+</ol>

@@ -1,3 +1,13 @@
 <h1>Welcome, <%= @user.username %></h1>
 
+<h3><a href='/tweets/new'>TWEET HERE</a></h3>
+
+<h2>Hottest Tweets in the World</h2>
+<% Tweet.all.each do |tweet| %>
+    <%= tweet.content %>
+<%end%>
+
+
+<h2>Your Profile HERE</h2>
+
 <h3><a href='/logout'>Log Out</a></h3>

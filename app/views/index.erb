@@ -1,1 +1,7 @@
- <h1>Test Index</h1>
+ <h1>Worlds Hottest Tweets</h1>
+
+ <ol>
+     <% @tweets.all do |tweet| %>
+         <li> <%= tweet.content %></li>
+     <%end%>
+ </ol>

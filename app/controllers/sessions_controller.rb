@@ -28,13 +28,18 @@ class SessionsController < ApplicationController
     end
 
     get '/login' do
-        erb :'users/login'
+        @user = Helpers.current_user(session)
+        if Helpers.is_logged_in?(session) == false
+            erb :'users/login'
+        else
+            redirect '/tweets'
+        end
     end
 
     post '/login' do
         @user = User.find_by(:username => params[:username])
         if @user && @user.authenticate(params[:password])
-            session[:user_id] = user.id
+            session[:user_id] = @user.id
             redirect '/tweets'
         else
             redirect '/login'
@@ -43,14 +48,37 @@ class SessionsController < ApplicationController
 
     get '/tweets' do
         #"Welcome #{session[:username]}"
-        @user = User.find_by(id: session[:user_id])
-        erb :"tweets/tweets"
+        @user = Helpers.current_user(session)
+        if Helpers.is_logged_in?(session) == false
+            redirect '/login'
+        else
+            @user = User.find_by(id: session[:user_id])
+            @tweets = Tweet.all
+            erb :"tweets/tweets"
+        end
+    end
+
+    get '/index' do
+        @user = Helpers.current_user(session)
+        if Helpers.is_logged_in?(session) == false
+            redirect '/login'
+        else
+            #@user = User.find_by(id: session[:user_id])
+            #@tweets = Tweet.all
+            redirect '/tweets'
+        end
     end
 
     get '/logout' do
-        session.clear
-        erb :home
+        @user = Helpers.current_user(session)
+        if Helpers.is_logged_in?(session)
+            session.clear
+            redirect '/login'
+        else
+            redirect '/'
+        end
     end
-
-
+        #if Helpers.is_logged_in?(session) == false
+        #    redirect '/login'
+        #else
 end
